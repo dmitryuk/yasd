@@ -89,8 +89,8 @@ std::string RemoteDebugger::get_next_cmd() {
     do {
         ret = recv(sock, &c, 1, 0);
         if (ret == 0) {
-            yasd::util::printfln_info(yasd::Color::YASD_ECHO_YELLOW, "[yasd] recv command error, connection closed");
-            zend_bailout();
+            // Try to reconnect
+            init();
         }
         if (ret < 0) {
             yasd::util::printfln_info(yasd::Color::YASD_ECHO_YELLOW, "[yasd] recv command error, %s", strerror(errno));
